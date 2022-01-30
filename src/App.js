@@ -1,25 +1,94 @@
-import logo from './logo.svg';
-import './App.css';
+
+import React from 'react';
+import styled from 'styled-components';
+import {Route, Routes, useNavigate, useLocation} from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import {loadWordFB} from './redux/modules/word';
+import {db} from './firebase';
+import { collection, getDocs } from 'firebase/firestore';
+
+
+
+import List from './List';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import AddCard from './AddCard';
+import UpdateCard from './UpdateCard';
+import Spinner from './Spinner';
+
+
+
 
 function App() {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  // console.log(location);
+  const is_loaded = useSelector((state) => state.word.is_loaded);
+  // console.log(is_loaded);
+ 
+
+  React.useEffect(async() => {
+    
+    dispatch(loadWordFB());
+
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"  
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWrap className="App">
+      <Header><Title>나만의 단어장</Title></Header>
+      
+      <Wrap>
+
+        <Routes>
+          <Route path="/" element={<List />} />
+          <Route path="/add" element={<AddCard />} />
+          <Route path="/update/:id" element={<UpdateCard />} />
+          
+        </Routes>
+        
+
+        <Fab aria-label="add" style={{position:"fixed", bottom:"30px", right:"30px"}}
+        onClick={() => {
+          navigate('/add');
+        }}>
+          <AddIcon />
+        </Fab>
+        
+        {is_loaded ? null : <Spinner/>}
+
+      </Wrap>
+
+    </AppWrap>
   );
 }
+
+const AppWrap = styled.div`
+  font-style: oblique;
+`;
+
+const Wrap = styled.div`
+  padding: 100px 50px;
+`;
+
+const Header = styled.div`
+  background-color: #e9b4e9;
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 5px solid white;
+`;
+
+const Title = styled.span`
+  color: white;
+  font-size: 2em;
+  font-weight: 700;
+`;
+
 
 export default App;
