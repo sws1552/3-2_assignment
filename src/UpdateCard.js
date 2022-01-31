@@ -2,17 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import {useParams, useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {loadWordFB} from './redux/modules/word';
+import {updateWordFB} from './redux/modules/word';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 
+
 const UpdateCard = () => {
 
-   
-    const dispatch = useDispatch();
+    const wordText = React.useRef();
+    const explanationText = React.useRef();
+    const exampleText = React.useRef();
 
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+        
     const {id} = useParams();
 
     const word_list = useSelector((state) => state.word.list);
@@ -24,7 +30,13 @@ const UpdateCard = () => {
     if(usually.length === 0){ return false; }
 
     const updateBtn = () => {
+        let wordVal = wordText.current.value;
+        let explanationVal = explanationText.current.value;
+        let exampleVal =  exampleText.current.value;
 
+        dispatch(updateWordFB(id, wordVal, explanationVal, exampleVal));
+
+        navigate('/');
     }
 
     return (
@@ -47,22 +59,28 @@ const UpdateCard = () => {
                         label="단어"
                         variant="standard"
                         defaultValue={usually.length !== 0 ? usually[0].word : ''}
+                        color='warning'
+                        inputRef={wordText}
                         style={{width:"90%"}}
                         />
                         <TextField
                         required
-                        id="standard-required"
+                        id="standard-required2"
                         label="설명"
                         variant="standard"
                         defaultValue={usually.length !== 0 ? usually[0].explanation : ''}
+                        color='warning'
+                        inputRef={explanationText}
                         style={{width:"90%"}}
                         />
                         <TextField
                         required
-                        id="standard-required"
+                        id="standard-required3"
                         label="예시"
                         variant="standard"
                         defaultValue={usually.length !== 0 ? usually[0].example : ''}
+                        color='warning'
+                        inputRef={exampleText}
                         style={{width:"90%"}}
                         />
                     </div>

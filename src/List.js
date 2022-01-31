@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {checkUpdateFB} from './redux/modules/word';
+import {checkUpdateFB, deleteWordFB} from './redux/modules/word';
 
 
 import IconButton from '@mui/material/IconButton';
@@ -21,22 +21,30 @@ const List = () => {
         dispatch(checkUpdateFB(id));
     }
 
+    const deleteBtn = (id) => {
+        if(window.confirm('삭제 하시겠습니까?')){
+            dispatch(deleteWordFB(id));
+        }else {
+            return false;
+        }
+    }
+
     return (
         <Container>
             {wordList.map((item, i) => {
-                
                 return (
-                    <Card key={i}>
+                    <Card key={i} style={{backgroundColor: item.completed ? "#e9b4e9" : ""}}>
                     <BtnGroup>
-                        <IconButton style={{color: "#e9b4e9"}}
+                        <IconButton style={{color: item.completed ? "white" : "#e9b4e9"}}
                         onClick={() => {checkUpdateBtn(item.id)}}><CheckOutlinedIcon/></IconButton>
-                        <IconButton style={{color: "#e9b4e9"}}
+                        <IconButton style={{color: item.completed ? "white" : "#e9b4e9"}}
                         onClick={() => {navigate('/update/'+item.id)}}><BorderColorOutlinedIcon/></IconButton>
-                        <IconButton style={{color: "#e9b4e9"}}><DeleteIcon/></IconButton>
+                        <IconButton style={{color: item.completed ? "white" : "#e9b4e9"}}
+                        onClick={() => {deleteBtn(item.id)}}><DeleteIcon/></IconButton>
                     </BtnGroup>
-                    <Word>{item.word}</Word>
-                    <Explan>{item.explanation}</Explan>
-                    <Example style={{color: "blue"}}>{item.example}</Example>  
+                    <Word style={{color: item.completed ? "white" : "#e9b4e9"}}>{item.word}</Word>
+                    <Explan style={{color: item.completed ? "white" : "#e9b4e9"}}>{item.explanation}</Explan>
+                    <Example style={{color: item.completed ? "white" : "#BFFF00"}}>{item.example}</Example>  
                     </Card>
                 )
             })}

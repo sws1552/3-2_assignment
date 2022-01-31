@@ -9,6 +9,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 
 
+import backimg from './images/배경.jpg';
 import List from './List';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -23,7 +24,6 @@ function App() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
 
   // console.log(location);
   const is_loaded = useSelector((state) => state.word.is_loaded);
@@ -38,7 +38,9 @@ function App() {
 
   return (
     <AppWrap className="App">
-      <Header><Title>나만의 단어장</Title></Header>
+      <Header><Title onClick={() => {
+        navigate('/');
+      }}>나만의 단어장</Title></Header>
       
       <Wrap>
 
@@ -67,6 +69,11 @@ function App() {
 
 const AppWrap = styled.div`
   font-style: oblique;
+  background-image: url(${backimg});
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+  background-attachment: fixed;
 `;
 
 const Wrap = styled.div`
@@ -82,12 +89,14 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 5px solid white;
+  z-index: 10;
 `;
 
 const Title = styled.span`
   color: white;
   font-size: 2em;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 

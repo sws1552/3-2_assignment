@@ -55,6 +55,7 @@ const AddCard = () => {
                         label="단어"
                         variant="standard"
                         style={{width:"90%"}}
+                        color='warning'
                         inputRef={word}/>
 
                         <TextField
@@ -63,6 +64,7 @@ const AddCard = () => {
                         label="설명"
                         variant="standard"
                         style={{width:"90%"}}
+                        color='warning'
                         inputRef={explanation}/>
 
                         <TextField
@@ -71,6 +73,7 @@ const AddCard = () => {
                         label="예시"
                         variant="standard"
                         style={{width:"90%"}}
+                        color='warning'
                         inputRef={example}/>
                     </div>
                 </Box>
